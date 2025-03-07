@@ -1,4 +1,4 @@
-package lihco3.scshop.scshop.config;
+package lihco3.scshop.scshop.config.currency;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

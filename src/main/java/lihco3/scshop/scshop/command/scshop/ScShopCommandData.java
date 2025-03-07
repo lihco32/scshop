@@ -1,8 +1,10 @@
-package lihco3.scshop.scshop.command;
+package lihco3.scshop.scshop.command.scshop;
 
+import lihco3.scshop.scshop.config.currency.CurrencyConfig;
 import lihco3.scshop.scshop.utility.ScCommandParser;
 import lihco3.scshop.scshop.utility.ScWorldHelper;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -23,13 +25,8 @@ public class ScShopCommandData {
     @NotNull
     List<Integer> customModels;
 
-    //TODO: change currency type
     @Nullable
-    String currency;
-    @Nullable
-    Integer currencyAmount;
-    @Nullable
-    String currencyReceiver;
+    ScShopPriceData price;
 
     @Override
     public String toString() {
@@ -39,9 +36,9 @@ public class ScShopCommandData {
                 ", posZ=" + posZ +
                 ", itemIds=" + itemIds +
                 ", customModels=" + customModels +
-                ", currency=" + (currency != null ? "\"" + currency + "\"" : "null") +
-                ", currencyAmount=" + currencyAmount +
-                ", currencyReceiver=" + (currencyReceiver != null ? "\"" + currencyReceiver + "\"" : "null") +
+                ", currency=" + (price == null ? "null" : price.currency) +
+                ", currencyAmount=" + (price == null ? "null" : price.amount) +
+                ", currencyReceiver=" + (price == null ? "null" : price.receiver) +
                 '}';
     }
 
@@ -58,12 +55,17 @@ public class ScShopCommandData {
         this.posZ = Objects.requireNonNull(posZ, "posZ cannot be null");
         this.itemIds = Objects.requireNonNull(itemIds, "itemIds cannot be null");
         this.customModels = Objects.requireNonNull(customModels, "customModels cannot be null");
-        this.currency = currency;
-        this.currencyAmount = currencyAmount;
-        this.currencyReceiver = currencyReceiver;
+
+        if(currency == null || currencyAmount == null || currencyReceiver == null) {
+            this.price = null;
+        }
+        else {
+            this.price = new ScShopPriceData(currency, currencyAmount, currencyReceiver);
+        }
     }
 
-    public static ScShopCommandData fromArgs(@NotNull CommandSender sender, @NotNull String[] args) throws Exception{
+    // Constructor from args
+    public static @NotNull ScShopCommandData fromArgs(@NotNull CommandSender sender, @NotNull String[] args) throws Exception {
         if(args.length != 5 && args.length != 8) {
             throw new Exception("Wrong number of arguments");
         }
@@ -130,5 +132,36 @@ public class ScShopCommandData {
                 currencyAmount,
                 currencyReceiver
         );
+    }
+
+    // Returns true if user's payment item matches the ones required by command
+    public @NotNull Boolean validatePaymentItem(@Nullable ItemStack playerItem) throws Exception {
+        if(price == null) throw new Exception("No price is required");
+        if(playerItem == null) throw new Exception("No currency item provided");
+
+        // 1. Find currency in config
+        var configCurrency = CurrencyConfig.getCurrencyItem(price.currency);
+        if(configCurrency == null) throw new Exception("Did not find a corresponding currency");
+
+        // 2. Verify currency id
+        var playersCurrencyId = playerItem.getType().getKey().getKey().toUpperCase();
+        if(!configCurrency.itemId.equals(playersCurrencyId)) {
+            throw new Exception("Currency id doesn't match " + configCurrency.itemId);
+        }
+
+        // 3. Verify amount
+        if(price.amount != playerItem.getAmount()) throw new Exception("Wrong currency amount");
+
+        // 4. Verify custom model data
+        if(configCurrency.customModelData != null) {
+            if(!playerItem.getItemMeta().hasCustomModelData()) {
+                throw new Exception("Wrong currency custom model data");
+            }
+            if(playerItem.getItemMeta().getCustomModelData() != configCurrency.customModelData) {
+                throw new Exception("Wrong currency custom model data");
+            }
+        }
+
+        return true;
     }
 }
