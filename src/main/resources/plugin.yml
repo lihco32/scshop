@@ -1,0 +1,12 @@
+name: scshop
+version: '1.0-SNAPSHOT'
+main: lihco3.scshop.scshop.Scshop
+api-version: '1.21'
+
+commands:
+  command:
+    description: "ScShop Command"
+    usage: "/scshop ~ ~ ~ [a,b] [1,2] price_item1 10 nickname"
+    aliases: [scshop]
+    permission: scshop.commands.scshop
+    permission-message: "You do not have permission to use this command"
