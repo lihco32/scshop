@@ -1,9 +1,9 @@
-package lihco3.scshop.scshop.command.scshop;
+package lihco3.scshop.scshop.command.scshop.transform;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
-public class ScShopPriceData {
+public class TransformPriceData {
     @NotNull
     String currency;
     @NotNull
@@ -11,7 +11,7 @@ public class ScShopPriceData {
     @NotNull
     String receiver;
 
-    public ScShopPriceData(
+    public TransformPriceData(
             @NotNull String currency,
             @NotNull Integer amount,
             @NotNull String receiver

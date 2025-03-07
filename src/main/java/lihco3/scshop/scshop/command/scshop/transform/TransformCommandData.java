@@ -1,4 +1,4 @@
-package lihco3.scshop.scshop.command.scshop;
+package lihco3.scshop.scshop.command.scshop.transform;
 
 import lihco3.scshop.scshop.config.currency.CurrencyConfig;
 import lihco3.scshop.scshop.utility.ScCommandParser;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class ScShopCommandData {
+public class TransformCommandData {
     @NotNull
     Integer posX;
     @NotNull
@@ -26,7 +26,7 @@ public class ScShopCommandData {
     List<Integer> customModels;
 
     @Nullable
-    ScShopPriceData price;
+    TransformPriceData price;
 
     @Override
     public String toString() {
@@ -42,14 +42,14 @@ public class ScShopCommandData {
                 '}';
     }
 
-    public ScShopCommandData(@NotNull Integer posX,
-                             @NotNull Integer posY,
-                             @NotNull Integer posZ,
-                             @NotNull List<String> itemIds,
-                             @NotNull List<Integer> customModels,
-                             @Nullable String currency,
-                             @Nullable Integer currencyAmount,
-                             @Nullable String currencyReceiver) {
+    public TransformCommandData(@NotNull Integer posX,
+                                @NotNull Integer posY,
+                                @NotNull Integer posZ,
+                                @NotNull List<String> itemIds,
+                                @NotNull List<Integer> customModels,
+                                @Nullable String currency,
+                                @Nullable Integer currencyAmount,
+                                @Nullable String currencyReceiver) {
         this.posX = Objects.requireNonNull(posX, "posX cannot be null");
         this.posY = Objects.requireNonNull(posY, "posY cannot be null");
         this.posZ = Objects.requireNonNull(posZ, "posZ cannot be null");
@@ -60,12 +60,12 @@ public class ScShopCommandData {
             this.price = null;
         }
         else {
-            this.price = new ScShopPriceData(currency, currencyAmount, currencyReceiver);
+            this.price = new TransformPriceData(currency, currencyAmount, currencyReceiver);
         }
     }
 
     // Constructor from args
-    public static @NotNull ScShopCommandData fromArgs(@NotNull CommandSender sender, @NotNull String[] args) throws Exception {
+    public static @NotNull TransformCommandData fromArgs(@NotNull CommandSender sender, @NotNull String[] args) throws Exception {
         if(args.length != 5 && args.length != 8) {
             throw new Exception("Wrong number of arguments");
         }
@@ -122,7 +122,7 @@ public class ScShopCommandData {
             currencyReceiver = args[7];
         }
 
-        return new ScShopCommandData(
+        return new TransformCommandData(
                 posX,
                 posY,
                 posZ,

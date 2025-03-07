@@ -4,9 +4,30 @@ main: lihco3.scshop.scshop.Scshop
 api-version: '1.21'
 
 commands:
-  command:
-    description: "ScShop Command"
-    usage: "/scshop ~ ~ ~ [a,b] [1,2] price_item1 10 nickname"
+  scshop:
+    description: "ScShop Main Command"
+    usage: "/scshop [subcommand]"
     aliases: [scshop]
-    permission: scshop.commands.scshop
+    permission: scshop.use
     permission-message: "You do not have permission to use this command"
+
+permissions:
+  scshop.use:
+    description: "Allows /scshop usage"
+    default: true
+  scshop.transform:
+    description: "Command for command blocks to transform custom model data of items"
+    usage: "/scshop transform ~ ~ ~ [a,b] [1,2] currency_item1 currency_amount nickname"
+    default: op
+  scshop.stats:
+    description: "Shows player his currency"
+    usage: "/scshop stats"
+    default: true
+  scshop.withdraw:
+    description: "Sends player all of his currency"
+    usafe: "/scshop withdraw"
+    default: true
+  scshop.help:
+    description: "Prints help message"
+    usage: "/scshop help"
+    default: true

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -63,5 +64,9 @@ public class CurrencyConfig {
                 materialName,
                 customModelData == 0 ? null : customModelData
         );
+    }
+
+    static public @NotNull String[] listCurrencyKeys() {
+        return config.getKeys(false).toArray(String[]::new);
     }
 }

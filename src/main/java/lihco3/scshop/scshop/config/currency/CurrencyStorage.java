@@ -83,15 +83,6 @@ public class CurrencyStorage {
         return true;
     }
 
-    // Clear player's balance
-    public static @Nullable Integer clearBalance(UUID playerId, String currencyType, int amount) {
-        var balance = getBalance(playerId, currencyType);
-        if(balance == null) return null;
-
-        setBalance(playerId, currencyType, 0);
-        return balance;
-    }
-
     // Save file
     private static Boolean saveStorage() {
         try {
