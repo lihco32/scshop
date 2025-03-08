@@ -1,6 +1,7 @@
 package lihco3.scshop.scshop.command.scshop;
 
 import lihco3.scshop.scshop.command.scshop.help.ScShopHelp;
+import lihco3.scshop.scshop.command.scshop.reload.ScShopReload;
 import lihco3.scshop.scshop.command.scshop.stats.ScShopStats;
 import lihco3.scshop.scshop.command.scshop.transform.ScShopTransform;
 import lihco3.scshop.scshop.command.scshop.withdraw.ScShopWithdraw;
@@ -58,6 +59,13 @@ public class ScShopCommand implements CommandExecutor, TabCompleter {
                 }
                 ScShopWithdraw.run(sender);
                 return true;
+            case "reload":
+                if(!sender.hasPermission("scshop.reload")) {
+                    sender.sendMessage( "You don't have permission to use this command.");
+                    return true;
+                }
+                ScShopReload.run(sender);
+                return true;
         }
 
         sender.sendMessage("Usage: /scshop help");
@@ -71,8 +79,11 @@ public class ScShopCommand implements CommandExecutor, TabCompleter {
             @NotNull String s,
             @NotNull String[] strings
     ) {
-        if(strings.length == 1) {
-            return List.of("help", "stats", "withdraw", "transform");
+        List<String> options = List.of("help", "stats", "withdraw", "transform", "reload");
+        if (strings.length == 1) {
+            return options.stream()
+                    .filter(option -> option.startsWith(strings[0].toLowerCase()))
+                    .toList();
         }
 
         return List.of();

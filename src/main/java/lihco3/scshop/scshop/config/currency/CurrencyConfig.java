@@ -20,12 +20,13 @@ public class CurrencyConfig {
         loadCurrencyConfig();
     }
 
-    private static void loadCurrencyConfig() {
+    public static void loadCurrencyConfig() {
         final Plugin plugin = Scshop.getInstance();
         File currencyConfigFile = new File(plugin.getDataFolder(), "currency_config.yml");
 
         if(currencyConfigFile.exists()) {
             config = YamlConfiguration.loadConfiguration(currencyConfigFile);
+            return;
         }
 
         // Default config
