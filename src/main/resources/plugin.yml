@@ -1,5 +1,5 @@
 name: scshop
-version: '1.0-SNAPSHOT'
+version: '1.0'
 main: lihco3.scshop.scshop.Scshop
 api-version: '1.21'
 
